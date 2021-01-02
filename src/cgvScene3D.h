@@ -9,8 +9,13 @@
 #include <GL/glut.h>
 #endif
 
+class cgvCube;
 
 class cgvScene3D {
+
+private:
+	cgvCube* cube;
+
 protected:
 	// Additional attributes		
 	bool axes;

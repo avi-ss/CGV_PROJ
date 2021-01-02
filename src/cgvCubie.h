@@ -21,21 +21,19 @@
 
 class cgvCubie
 {
-	float angle = 90;
+private:
+
+	float angle = 90.0f;
 
 	float length;
 	cgvPoint3D position;
 	cgvPoint3D angleAxis;
-
-	bool rotating;
 
 public:
 
 	cgvCubie() {
 		position = cgvPoint3D();
 		angleAxis = cgvPoint3D(0, 0, 0);
-
-		rotating = false;
 	}
 
 	cgvCubie(float x, float y, float z, float len) {
@@ -43,8 +41,6 @@ public:
 		position = cgvPoint3D(x, y, z);
 		length = len;
 		angleAxis = cgvPoint3D(0, 0, 0);
-
-		rotating = false;
 	}
 
 	void rotateX(int dir) {
@@ -57,11 +53,16 @@ public:
 
 	void rotateZ(int dir) {
 		angleAxis = cgvPoint3D(0, 0, dir);
-		rotating = true;
 	}
 
 	void update(int x, int y, int z) {
-		position = cgvPoint3D(x, y, z);
+		position[X] = x;
+		position[Y] = y;
+		position[Z] = z;
+	}
+
+	bool anyRotation() {
+		return (angleAxis[X] != 0.0f || angleAxis[Y] != 0.0f || angleAxis[Z] != 0.0f);
 	}
 
 	void render() {
@@ -76,11 +77,14 @@ public:
 		float r = length / 2;
 
 		glPushMatrix();
-		if (rotating) { 
+
+		if (anyRotation()) {
 			std::cout << "holaa" << std::endl;
 			glRotatef(angle, angleAxis[X], angleAxis[Y], angleAxis[Z]); 
 		}
+
 		glTranslatef(position[X], position[Y], position[Z]);
+
 		// Front-face Quad
 		glBegin(GL_QUADS);
 		glMaterialfv(GL_FRONT, GL_EMISSION, green);

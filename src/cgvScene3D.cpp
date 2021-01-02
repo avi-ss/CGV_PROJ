@@ -9,10 +9,9 @@
 
 // Constructor methods -----------------------------------
 
-cgvScene3D::cgvScene3D() {
+cgvScene3D::cgvScene3D(): cube(new cgvCube(1)) {
 
 	axes = true;
-
 }
 
 cgvScene3D::~cgvScene3D() {}
@@ -44,7 +43,7 @@ void draw_axes(void) {
 void cgvScene3D::render() {
 
 	// lights
-	GLfloat light0[4] = { 5.0,5.0,5.0,1 }; // point light source  
+	GLfloat light0[4] = { 5.0, 5.0, 5.0, 1 }; // point light source  
 	glLightfv(GL_LIGHT0, GL_POSITION, light0); // this light is placed here and it remains still 
 	glEnable(GL_LIGHT0);
 
@@ -54,13 +53,10 @@ void cgvScene3D::render() {
 	// draw the axes
 	if (axes) draw_axes();
 
-	cgvCube cube = cgvCube(1);
-	cube.render();
-	cube.rotateZ(1);
-
+	cube->rotateZ(3);
+	cube->render();
 
 	glPopMatrix(); // restore the modelview matrix 
-
 }
 
 
