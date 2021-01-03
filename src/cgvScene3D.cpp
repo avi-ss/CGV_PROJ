@@ -43,7 +43,7 @@ void draw_axes(void) {
 void cgvScene3D::render() {
 
 	// lights
-	GLfloat light0[4] = { 5.0,5.0,5.0,1 }; // point light source  
+	GLfloat light0[4] = { 5.0, 5.0, 5.0, 1 }; // point light source  
 	glLightfv(GL_LIGHT0, GL_POSITION, light0); // this light is placed here and it remains still 
 	glEnable(GL_LIGHT0);
 
@@ -56,7 +56,6 @@ void cgvScene3D::render() {
 	cube->render();
 
 	glPopMatrix(); // restore the modelview matrix 
-
 }
 
 

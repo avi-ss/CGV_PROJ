@@ -9,10 +9,12 @@
 #include <GL/glut.h>
 #endif
 
-#include "cgvCube.h"
+class cgvCube;
 
 class cgvScene3D {
 
+private:
+	cgvCube* cube;
 
 protected:
 	// Additional attributes		

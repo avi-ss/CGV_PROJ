@@ -28,6 +28,9 @@ struct Rotation {
 
 class cgvCubie
 {
+
+private:
+
 	float angle = 90.0f;
 
 	float length;
@@ -48,7 +51,6 @@ public:
 	}
 
 	void rotate(char axis, int dir) {
-
 		Rotation rot = { axis, dir };
 		rotations.push_back(rot);
 	}
@@ -90,6 +92,7 @@ public:
 				}
 			}
 		}
+
 		// Front-face Quad
 		glBegin(GL_QUADS);
 		glMaterialfv(GL_FRONT, GL_EMISSION, orange);
