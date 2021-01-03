@@ -17,51 +17,46 @@
 #include "cgvPoint3D.h"
 #include "cgvColor.h"
 #include <iostream>
+#include <vector>
 
+struct Rotation {
+
+	char axis;
+	int dir;
+
+};
 
 class cgvCubie
 {
-	float angle = 90;
+	float angle = 90.0f;
 
 	float length;
 	cgvPoint3D position;
-	cgvPoint3D angleAxis;
-
-	bool rotating;
+	std::vector<Rotation> rotations;
 
 public:
 
 	cgvCubie() {
 		position = cgvPoint3D();
-		angleAxis = cgvPoint3D(0, 0, 0);
-
-		rotating = false;
 	}
 
 	cgvCubie(float x, float y, float z, float len) {
-
-		position = cgvPoint3D(x, y, z);
+		position[X] = x;
+		position[Y] = y;
+		position[Z] = z;
 		length = len;
-		angleAxis = cgvPoint3D(0, 0, 0);
-
-		rotating = false;
 	}
 
-	void rotateX(int dir) {
-		angleAxis = cgvPoint3D(dir, 0, 0);
-	}
+	void rotate(char axis, int dir) {
 
-	void rotateY(int dir) {
-		angleAxis = cgvPoint3D(0, dir, 0);
-	}
-
-	void rotateZ(int dir) {
-		angleAxis = cgvPoint3D(0, 0, dir);
-		rotating = true;
+		Rotation rot = { axis, dir };
+		rotations.push_back(rot);
 	}
 
 	void update(int x, int y, int z) {
-		position = cgvPoint3D(x, y, z);
+		position[X] = x;
+		position[Y] = y;
+		position[Z] = z;
 	}
 
 	void render() {
@@ -76,14 +71,28 @@ public:
 		float r = length / 2;
 
 		glPushMatrix();
-		if (rotating) { 
-			std::cout << "holaa" << std::endl;
-			glRotatef(angle, angleAxis[X], angleAxis[Y], angleAxis[Z]); 
-		}
 		glTranslatef(position[X], position[Y], position[Z]);
+		if (!rotations.empty()) { 
+			for (Rotation r : rotations) {
+				switch (r.axis)
+				{
+				case 'x':
+					glRotatef(angle, r.dir, 0, 0);
+					break;
+				case 'y':
+					glRotatef(angle, 0, r.dir, 0);
+					break;
+				case 'z':
+					glRotatef(angle, 0, 0, r.dir);
+					break;
+				default:
+					break;
+				}
+			}
+		}
 		// Front-face Quad
 		glBegin(GL_QUADS);
-		glMaterialfv(GL_FRONT, GL_EMISSION, green);
+		glMaterialfv(GL_FRONT, GL_EMISSION, orange);
 		glNormal3f(0, 0, 1);
 		glVertex3f(-r, -r, -r);
 		glVertex3f(r, -r, -r);
@@ -92,7 +101,7 @@ public:
 
 		// Back-face Quad
 		glNormal3f(0, 0, -1);
-		glMaterialfv(GL_FRONT, GL_EMISSION, blue);
+		glMaterialfv(GL_FRONT, GL_EMISSION, red);
 		glVertex3f(r, r, r);
 		glVertex3f(r, -r, r);
 		glVertex3f(-r, -r, r);
@@ -100,7 +109,7 @@ public:
 
 		// Right-face Quad
 		glNormal3f(1, 0, 0);
-		glMaterialfv(GL_FRONT, GL_EMISSION, red);
+		glMaterialfv(GL_FRONT, GL_EMISSION, blue);
 		glVertex3f(r, r, r);
 		glVertex3f(r, -r, r);
 		glVertex3f(r, -r, -r);
@@ -108,7 +117,7 @@ public:
 
 		// Left-face Quad
 		glNormal3f(-1, 0, 0);
-		glMaterialfv(GL_FRONT, GL_EMISSION, orange);
+		glMaterialfv(GL_FRONT, GL_EMISSION, green);
 		glVertex3f(-r, r, r);
 		glVertex3f(-r, -r, r);
 		glVertex3f(-r, -r, -r);
@@ -133,6 +142,7 @@ public:
 		glEnd();
 
 		glPopMatrix();
+
 	}
 
 	int getX() { return position[X]; }

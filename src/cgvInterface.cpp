@@ -85,7 +85,24 @@ void cgvInterface::set_glutKeyboardFunc(unsigned char key, int x, int y) {
 
 	case 'a': // enable/disable the visualization of the axes
 		interface.scene.set_axes(interface.scene.get_axes() ? false : true);
-
+		break;
+	case '1': // enable/disable the visualization of the axes
+		interface.scene.rotateX(1, 1);
+		break;
+	case '2': // enable/disable the visualization of the axes
+		interface.scene.rotateY(1, 1);
+		break;
+	case '3': // enable/disable the visualization of the axes
+		interface.scene.rotateZ(1, 1);
+		break;
+	case '4': // enable/disable the visualization of the axes
+		interface.scene.rotateX(1, -1);
+		break;
+	case '5': // enable/disable the visualization of the axes
+		interface.scene.rotateY(1, -1);
+		break;
+	case '6': // enable/disable the visualization of the axes
+		interface.scene.rotateZ(1, -1);
 		break;
 	case 27: // Escape key to exit
 		exit(1);

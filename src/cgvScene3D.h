@@ -9,11 +9,15 @@
 #include <GL/glut.h>
 #endif
 
+#include "cgvCube.h"
 
 class cgvScene3D {
+
+
 protected:
 	// Additional attributes		
 	bool axes;
+	cgvCube* cube;
 
 public:
 	// Default constructor and destructor
@@ -28,6 +32,10 @@ public:
 
 	bool get_axes() { return axes; };
 	void set_axes(bool _axes) { axes = _axes; };
+
+	void rotateX(int layer, int dir) { cube->rotateX(layer, dir); }
+	void rotateY(int layer, int dir) { cube->rotateY(layer, dir); }
+	void rotateZ(int layer, int dir) { cube->rotateZ(layer, dir); }
 };
 
 #endif

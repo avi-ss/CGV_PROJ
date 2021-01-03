@@ -9,10 +9,9 @@
 
 // Constructor methods -----------------------------------
 
-cgvScene3D::cgvScene3D() {
+cgvScene3D::cgvScene3D():cube(new cgvCube(1)) {
 
 	axes = true;
-
 }
 
 cgvScene3D::~cgvScene3D() {}
@@ -54,10 +53,7 @@ void cgvScene3D::render() {
 	// draw the axes
 	if (axes) draw_axes();
 
-	cgvCube cube = cgvCube(1);
-	cube.render();
-	cube.rotateZ(1);
-
+	cube->render();
 
 	glPopMatrix(); // restore the modelview matrix 
 

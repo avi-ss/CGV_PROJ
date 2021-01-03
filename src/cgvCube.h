@@ -21,46 +21,106 @@ const int DIM = 3;
 
 class cgvCube
 {
-	cgvCubie cube[DIM][DIM][DIM];
+	cgvCubie* cube[1];
 
 public:
 
 	cgvCube(float lenght) {
 
-		float offset = lenght;
+		int index = 0;
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
+		/*for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				for (int k = -1; k <= 1; k++) {
+					cube[index] = new cgvCubie(i, j, k, lenght);
+					index++;
+				}
+			}
+		}*/
 
-					float x = lenght * i - offset;
-					float y = lenght * j - offset;
-					float z = lenght * k - offset;
+		cube[index] = new cgvCubie(1, 1, 1, lenght);
+	}
 
-					cube[i][j][k] = cgvCubie(x, y, z, lenght);
+	void rotateX(int layer, int dir) {
+		std::cout << "ROTATE X-------------------------------------------" << std::endl;
+		for (int i = 0; i < 1; i++) {
+			if (cube[i] != nullptr) {
+				cgvMatrix2D matrix = cgvMatrix2D();
+
+				int x = cube[i]->getX();
+				int y = cube[i]->getY();
+				int z = cube[i]->getZ();
+
+				if (x == layer) {
+
+					std::cout << "cubie: " << x << y << z << std::endl;
+
+					matrix.rotate(dir * 90);
+					matrix.translate(y, z);
+
+					int newY = matrix.getX(); int newZ = matrix.getY();
+
+					std::cout << "new cubie: " << x << newY << newZ << std::endl;
+
+					cube[i]->update(x, newY, newZ);
+					cube[i]->rotate('x', dir);
 				}
 			}
 		}
 	}
 
-	void rotateZ(int dir) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
+	void rotateY(int layer, int dir) {
+		std::cout << "ROTATE Y-------------------------------------------" << std::endl;
+		for (int i = 0; i < 1; i++) {
+			if (cube[i] != nullptr) {
 				cgvMatrix2D matrix = cgvMatrix2D();
 
-				int x = cube[i][j][dir].getX();
-				int y = cube[i][j][dir].getY();
-				int z = cube[i][j][dir].getZ();
+				int x = cube[i]->getX();
+				int y = cube[i]->getY();
+				int z = cube[i]->getZ();
 
-				matrix.rotate(dir * 90);
-				matrix.translate(x, y);
+				if (y == layer) {
 
-				int newX = matrix.getX(); int newY = matrix.getY();
+					std::cout << "cubie: " << x << y << z << std::endl;
 
-				cube[i][j][dir].update(newX, newY, z);
-				cube[i][j][dir].rotateZ(dir);
+					matrix.rotate(-dir * 90);
+					matrix.translate(x, z);
 
-				std::cout << "first: " << x << ", " << y << ", second: " << newX << ", "<< newY<< std::endl;
+					int newX = matrix.getX(); int newZ = matrix.getY();
+
+					std::cout << "new cubie: " << newX << y << newZ << std::endl;
+
+					cube[i]->update(newX, y, newZ);
+					cube[i]->rotate('y', dir);
+				}
+			}
+		}
+	}
+
+	void rotateZ(int layer, int dir) {
+		std::cout << "ROTATE Z-------------------------------------------" << std::endl;
+		for (int i = 0; i < 1; i++) {
+			if (cube[i] != nullptr) {
+				cgvMatrix2D matrix = cgvMatrix2D();
+
+				int x = cube[i]->getX();
+				int y = cube[i]->getY();
+				int z = cube[i]->getZ();
+
+				if (z == layer) {
+
+					std::cout << "cubie: " << x << y << z << std::endl;
+
+					matrix.rotate(dir * 90);
+					matrix.translate(x, y);
+
+					int newX = matrix.getX(); int newY = matrix.getY();
+
+					std::cout << "new cubie: " << newX << newY << z << std::endl;
+
+					cube[i]->update(newX, newY, z);
+					cube[i]->rotate('z', dir);
+				}
 			}
 		}
 	}
@@ -69,11 +129,9 @@ public:
 
 		glPushMatrix();
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
-					cube[i][j][k].render();
-				}
+		for (int i = 0; i < 1; i++) {
+			if (cube[i] != nullptr) {
+				cube[i]->render();
 			}
 		}
 
